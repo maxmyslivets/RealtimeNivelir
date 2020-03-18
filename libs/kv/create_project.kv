@@ -1,4 +1,5 @@
 #:import images_path kivymd.images_path
+#:import toast kivymd.toast.toast
 
 <Create_project>:
 
@@ -9,6 +10,7 @@
         elevation: 10
         pos_hint: {'top': 1}
         left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+        right_action_items: [["minus", lambda x: root.add_stantion_label_1()], ["plus", lambda x: root.add_stantion_label_2()]]
 
     BoxLayout:
         orientation: "vertical"
@@ -20,32 +22,54 @@
         ScrollView:
 
             BoxLayout:
-                id: list
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: 'vertical'
 
                 BoxLayout:
+                    id: list1
                     orientation: 'vertical'
-                    padding: '10dp'
                     size_hint_y: None
                     height: self.minimum_height
-                
-                    MDLabel:
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding: '10dp'
                         size_hint_y: None
-                        text: 'Прямой ход'
+                        height: self.minimum_height
+                    
+                        MDLabel:
+                            size_hint_y: None
+                            text: 'Прямой ход'
 
-                    MDTextField:
-                        id: H0
-                        size_hint_x: .8
-                        pos_hint: {'center_x': .5}
-                        hint_text: "Высота точки стояния задней рейки"
-                        input_filter: "float"
-                        text: '124.4523'
+                        MDTextField:
+                            id: H0
+                            size_hint_x: .8
+                            pos_hint: {'center_x': .5}
+                            hint_text: "Высота точки стояния задней рейки"
+                            input_filter: "float"
+                            text: '124.4523'
 
-                Stantion:
+                    Stantion_1:
                 
+                BoxLayout:
+                    id: list2
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
 
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding: '10dp'
+                        size_hint_y: None
+                        height: self.minimum_height
+                    
+                        MDLabel:
+                            size_hint_y: None
+                            text: 'обратный ход'
+
+                    Stantion_2:
+                
         MDBottomAppBar:
             MDToolbar:
                 id: bottom_toolbar1
@@ -53,8 +77,8 @@
                 icon: "plus"
                 type: "bottom"
                 mode: "end"
-                on_action_button: root.add_stantion_label()
-                left_action_items: [["menu", lambda x: x]]
+                on_action_button: pass
+                left_action_items: [["menu", lambda x: toast('Экспорт, Ведомость, Удалить проект')]]
             
     MDNavigationDrawer:
         id: nav_drawer
@@ -127,9 +151,8 @@
                         on_release: app.stop()
 
 
-
-<Stantion>:
-    id: stantion_label
+<Stantion_1>:
+    id: stantion_label_1
     orientation: 'vertical'
     padding: '10dp'
     size_hint_y: None
@@ -239,7 +262,7 @@
             size_hint: .3, 1
             text: '%\nот\nдоп.'
             on_release:
-                if root.dop_result(str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
+                if root.dop_result_1(str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
                 else: self.md_bg_color = app.theme_cls.primary_color 
 
     MDLabel:
@@ -255,4 +278,132 @@
         text: 'Н (прибл) = '
 
 
+<Stantion_2>:
+    id: stantion_label_2
+    orientation: 'vertical'
+    padding: '10dp'
+    size_hint_y: None
+    height: self.minimum_height
+
+    MDSeparator:
+
+    MDTextField:
+        id: name_stantion
+        size_hint_x: .9
+        pos_hint: {'center_x': .5}
+        hint_text: 'Имя станции'
+        text: '1'
+    
+    GridLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: '10dp'
+        cols: 2
+
+        MDTextField:
+            id: sp
+            text: '370.5'
+            hint_text: 'Sп'
+            input_filter: "float"
+            helper_text: "Длина переднего плеча"
+            helper_text_mode: "on_focus"
+
+        MDTextField:
+            id: sz
+            text: '370.5'
+            hint_text: 'Sз'
+            input_filter: "float"
+            helper_text: "Длина заднего плеча"
+            helper_text_mode: "on_focus"
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+
+        GridLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: '10dp'
+            cols: 2
+            rows: 4
+
+            MDTextField:
+                id: zo1
+                text: '150.3967'
+                hint_text: 'ЗО (1)'
+                input_filter: "float"
+                helper_text: "Задний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: zo2
+                text: '150.3969'
+                hint_text: 'ЗО (2)'
+                input_filter: "float"
+                helper_text: "Задний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: po1
+                text: '260.1276'
+                hint_text: 'ПО (1)'
+                input_filter: "float"
+                helper_text: "Передний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: po2
+                text: '260.1301'
+                hint_text: 'ПО (2)'
+                input_filter: "float"
+                helper_text: "Передний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: pd1
+                text: '850.3728'
+                hint_text: 'ПД (1)'
+                input_filter: "float"
+                helper_text: "Передний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: pd2
+                text: '850.3839'
+                hint_text: 'ПД (2)'
+                input_filter: "float"
+                helper_text: "Передний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: zd1
+                text: '740.6429'
+                hint_text: 'ЗД (1)'
+                input_filter: "float"
+                helper_text: "Задний отсчет"
+                helper_text_mode: "on_focus"
+            MDTextField:
+                id: zd2
+                text: '740.6429'
+                hint_text: 'ЗД (2)'
+                input_filter: "float"
+                helper_text: "Задний отсчет"
+                helper_text_mode: "on_focus"
+    
+        MDFillRoundFlatButton:
+            id: dop_btn
+            size_hint: .3, 1
+            text: '%\nот\nдоп.'
+            on_release:
+                if root.dop_result_2(str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
+                else: self.md_bg_color = app.theme_cls.primary_color 
+
+    MDLabel:
+        id: h_res
+        size_hint_y: None
+        height: '48dp'
+        text: 'h = '
+
+    MDLabel:
+        id: H_res
+        size_hint_y: None
+        height: '48dp'
+        text: 'Н (прибл) = '
+
+
+    
     

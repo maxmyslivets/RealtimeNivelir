@@ -5,7 +5,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd.toast import toast
 from libs.baseclass.create_project import Create_project
 
-
 class Home(Screen):
     """ Пустой экран, кнопка меню в правом верхнем углу:
     [создать проект, открыть проект, удалить проект, документация, экспорт, ведомость].

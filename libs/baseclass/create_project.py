@@ -9,14 +9,14 @@ from kivymd.uix.label import MDLabel
 class Stantion_1(BoxLayout):
     """ Прямой ход """
     
-    def dop_result_1(self,
+    def dop_result_1(self, name_proj,
         name_stantion,
         sp, sz, 
         zo1, zo2, 
         po1, po2, 
         pd1, pd2, 
         zd1, zd2):
-        print('прямой', name_stantion,
+        print('прямой', name_proj, name_stantion,
         sp, sz, 
         zo1, zo2, 
         po1, po2, 
@@ -70,14 +70,14 @@ class Stantion_1(BoxLayout):
 class Stantion_2(BoxLayout):
     """ Обратный ход """
     
-    def dop_result_2(self,
+    def dop_result_2(self, name_proj,
         name_stantion,
         sp, sz, 
         zo1, zo2, 
         po1, po2, 
         pd1, pd2, 
         zd1, zd2):
-        print('обратный', name_stantion,
+        print('обратный',  name_proj, name_stantion,
         sp, sz, 
         zo1, zo2, 
         po1, po2, 

@@ -3,72 +3,46 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.toast import toast
+from libs.baseclass.create_project import Create_project
 
 
-class Stantion(BoxLayout):
+class Home(Screen):
+    """ Пустой экран, кнопка меню в правом верхнем углу:
+    [создать проект, открыть проект, удалить проект, документация, экспорт, ведомость].
+    Идея на миллион:
+    боковое меню - [создать проект, открыть проект, документация],
+    кнопка на тулбаре - [ведомость, экспорт, удалить проект]. """
     
-    def dop_result(self,
-        name_stantion,
-        sp, sz, 
-        zo1, zo2, 
-        po1, po2, 
-        pd1, pd2, 
-        zd1, zd2):
-
-        # среднее из 2х отсчетов по ЗО, ПО, ПД, ЗД
-        zo = (zo1+zo2)/2
-        po = (po1+po2)/2
-        pd = (pd1+pd2)/2
-        zd = (zd1+zd2)/2
-
-        # разница средних по О и Д
-        razn_o = max([zo, po]) - min([zo, po])
-        razn_d = max([pd, zd]) - min([pd, zd])
-
-        # входное число на допуск
-        d = abs(razn_d - razn_o)
-        self.ids.dop_btn.text = str(round(d / 0.014 * 100))+'%\nот\nдопуска'
-
-        # проверка на допуск, если вошло:
-        if d <= 0.0140:
-
-            # среднее из разниц
-            sr_razn = (razn_o+razn_d)/2
-
-            # коэффициент превышения
-            if zo < po:
-                k_h = -1
-            else:
-                k_h = 1
-
-            # превышение
-            h = (sr_razn*50/1000)*k_h
-            # сумма плеч
-            s = sp+sz
-
-            # обновление MDLabel h и H
-            self.ids.h_res.text = 'h = '+str(round(h, 4))
-            #self.ids.H_res.text = 'h = '+str(round(H, 4))
-
-            return True # Цвет кнопки не меняется
-
-        else:
-            # всплывающее уведомление
-            #self.ids.dop_btn.md_bg_color = [.9, .16, .16, 1]
-            toast('Значение НЕ В ДОПУСКЕ!')
-            self.ids.h_res.text = 'h = '
-
-            return False    # Цвет (md_bg_color: .9, .16, .16, 1) кнопки меняется
+    with open("libs/kv/home.kv", 'r', encoding='utf-8') as home_KV:
+        Builder.load_string(home_KV.read())
 
 
-class II_klass(Screen):
+class Open_project(Screen):
+    """ Экран со списком проектов, после выбора чтение данных с БД и построение экрана идентичного первому """
+
+    with open("libs/kv/open_project.kv", 'r', encoding='utf-8') as open_project_KV:
+        Builder.load_string(open_project_KV.read())
+
+
+class Documentation(Screen):
+    """ Экран списка документов, при выборе - переход на экран пролистывания (если упростить, то просто открытие pdf через встроенное приложение)
+ """
+
+    with open("libs/kv/documentation.kv", 'r', encoding='utf-8') as documentation_KV:
+        Builder.load_string(documentation_KV.read())
+
+class Export(Screen):
+    """ Генерация txt файлов по шаблону """
+
+    with open("libs/kv/export.kv", 'r', encoding='utf-8') as export_KV:
+        Builder.load_string(export_KV.read())
+
+
+class Vedomost(Screen):
+    """ Генерация doc файлов по шаблону """
     
-    with open("kv/II_klass.kv", 'r', encoding='utf-8') as II_klass_KV:
-        Builder.load_string(II_klass_KV.read())
-    
-    def add_stantion_label(self):
-        label1 = Stantion()
-        self.ids.list.add_widget(label1)
+    with open("libs/kv/vedomost.kv", 'r', encoding='utf-8') as vedomost_KV:
+        Builder.load_string(vedomost_KV.read())
 
 
 class RealtimeNivelirApp(MDApp):
@@ -79,7 +53,12 @@ class RealtimeNivelirApp(MDApp):
         self.theme_cls.theme_style = "Light"
 
         sm = ScreenManager()
-        sm.add_widget(II_klass(name='II_klass'))
+        sm.add_widget(Home(name='home'))
+        sm.add_widget(Create_project(name='create_project'))
+        sm.add_widget(Open_project(name='open_project'))
+        sm.add_widget(Documentation(name='documentation'))
+        sm.add_widget(Export(name='export'))
+        sm.add_widget(Vedomost(name='vedomost'))
 
         return sm
 

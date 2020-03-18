@@ -1,0 +1,102 @@
+#:import images_path kivymd.images_path
+
+<Home>:
+
+    MDToolbar:
+        id: toolbar
+        title: 'Realtime Nivelir'
+        md_bg_color: app.theme_cls.primary_color
+        elevation: 10
+        pos_hint: {'top': 1}
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+    FloatLayout:
+        BoxLayout:
+            size_hint: None, None
+            size: self.minimum_size
+            orientation: 'vertical'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            spacing: '40dp'
+
+            MDTextButton:
+                text: 'Create project...'
+                on_release: root.manager.current = "create_project"
+            MDTextButton:
+                text: 'Open project...'
+                on_release: root.manager.current = "open_project"
+            MDTextButton:
+                text: 'Documentation'
+                on_release: root.manager.current = "documentation"
+            MDTextButton:
+                text: 'Watch tutorial'
+                on_release: pass # start youtube chanel
+    
+    MDNavigationDrawer:
+        id: nav_drawer
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            BoxLayout:
+                id: top_box
+                size_hint_y: None
+                height: "200dp"
+                pos_hint: {"top": 1}
+
+                FitImage:
+                    source: f"{images_path}kivymd_alpha.png"
+                
+                GridLayout:
+                    cols: 1
+                    MDLabel:
+                        font_style: 'H4'
+                        text: 'Realtime\nNivelir'
+
+                    MDLabel:
+                        theme_text_color: 'Secondary'
+                        text: 'version: 0.1.0'
+            
+            ScrollView:
+                pos_hint: {"top": 1}
+
+                GridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: "20dp", 0, 0, 0
+                    spacing: "10dp"
+
+                    MDRectangleFlatIconButton:
+                        text: 'Home'
+                        icon: 'home-circle-outline'
+                        size_hint: 1, None
+                        height: "50dp"
+                        on_release: root.manager.current = "home"
+                    
+                    MDRectangleFlatIconButton:
+                        text: 'Create project...'
+                        icon: 'star'
+                        size_hint: 1, None
+                        height: "50dp"
+                        on_release: root.manager.current = "create_project"
+                    
+                    MDRectangleFlatIconButton:
+                        text: 'Open project...'
+                        icon: 'folder'
+                        size_hint: 1, None
+                        height: "50dp"
+                        on_release: root.manager.current = "open_project"
+                    
+                    MDRectangleFlatIconButton:
+                        text: 'Documentation'
+                        icon: 'book'
+                        size_hint: 1, None
+                        height: "50dp"
+                        on_release: root.manager.current = "documentation"
+                    
+                    MDRectangleFlatIconButton:
+                        text: 'Exit'
+                        icon: 'exit-to-app'
+                        size_hint: 1, None
+                        height: "50dp"
+                        on_release: app.stop()

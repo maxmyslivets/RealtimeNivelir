@@ -10,7 +10,7 @@
         elevation: 10
         pos_hint: {'top': 1}
         left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
-        right_action_items: [["minus", lambda x: root.add_stantion_label_1()], ["plus", lambda x: root.add_stantion_label_2()]]
+        right_action_items: [["minus", lambda x: root.add_stantion_label_1(self.title)], ["plus", lambda x: root.add_stantion_label_2(self.title)]]
 
     BoxLayout:
         orientation: "vertical"
@@ -65,9 +65,6 @@
                             hint_text: "Высота точки стояния задней рейки"
                             input_filter: "float"
                             text: '124.4523'
-
-                    Stantion_1:
-                        my_parameter: str(root.ids.toolbar.title)
                 
                 BoxLayout:
                     id: list2
@@ -84,9 +81,6 @@
                         MDLabel:
                             size_hint_y: None
                             text: 'обратный ход'
-
-                    Stantion_2:
-                        my_parameter: str(root.ids.toolbar.title)
                 
         MDBottomAppBar:
             MDToolbar:
@@ -170,7 +164,6 @@
 
 
 <Stantion_1>:
-    id: stantion_label_1
     orientation: 'vertical'
     padding: '10dp'
     size_hint_y: None
@@ -280,7 +273,7 @@
             size_hint: .3, 1
             text: '%\nот\nдоп.'
             on_release:
-                if root.dop_result_1(str(stantion_label_1.my_parameter), str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
+                if root.dop_result_1(str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
                 else: self.md_bg_color = app.theme_cls.primary_color 
 
     MDLabel:
@@ -297,7 +290,6 @@
 
 
 <Stantion_2>:
-    id: stantion_label_2
     orientation: 'vertical'
     padding: '10dp'
     size_hint_y: None
@@ -407,7 +399,7 @@
             size_hint: .3, 1
             text: '%\nот\nдоп.'
             on_release:
-                if root.dop_result_2(str(stantion_label_2.my_parameter), str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
+                if root.dop_result_2(str(name_stantion.text), float(sp.text), float(sz.text), float(zo1.text), float(zo2.text), float(po1.text), float(po2.text), float(pd1.text), float(pd2.text), float(zd1.text), float(zd2.text)) == False: self.md_bg_color = [.9, .16, .16, 1]
                 else: self.md_bg_color = app.theme_cls.primary_color 
 
     MDLabel:

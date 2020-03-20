@@ -1,6 +1,4 @@
-#:import images_path kivymd.images_path
-
-<Home>:
+<Projects>:
 
     MDToolbar:
         id: toolbar
@@ -10,23 +8,27 @@
         pos_hint: {'top': 1}
         left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
 
-    FloatLayout:
-        BoxLayout:
-            size_hint: None, None
-            size: self.minimum_size
-            orientation: 'vertical'
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            spacing: '40dp'
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_y: None
+        height: root.height - toolbar.height
+        
+        ScrollView:
+            BoxLayout:
+                id: list_projects
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+                padding: "20dp"
 
-            MDTextButton:
-                text: 'Projects'
-                on_release: root.manager.current = "projects"
-            MDTextButton:
-                text: 'Documentation'
-                on_release: root.manager.current = "documentation"
-            MDTextButton:
-                text: 'Watch tutorial'
-                on_release: pass # start youtube chanel
+        MDBottomAppBar:
+            MDToolbar:
+                id: bottom_toolbar
+                title: ""
+                icon: "plus"
+                type: "bottom"
+                mode: "end"
+                on_action_button: root.create_project_dialog()
     
     MDNavigationDrawer:
         id: nav_drawer
@@ -97,3 +99,30 @@
                         size_hint: 1, None
                         height: "50dp"
                         on_release: app.stop()
+
+
+<ListItem>:
+    id: list_item
+    pos_hint: {"center_y": .5}
+    on_size:
+        self.ids._right_container.width = container.width
+        self.ids._right_container.x = container.width
+
+    # text: 'имя проекта'
+    # secondary_text: 'дата и время создания'
+
+    IconLeftWidget:
+        icon: "file-document-outline"
+
+    Container:
+        id: container
+
+        MDIconButton:
+            id: btn1
+            icon: "file-edit-outline"
+            on_release: pass
+
+        MDIconButton:
+            id: btn2
+            icon: "delete-empty-outline"
+            on_release: root.delete_project(list_item.text); list_item.secondary_text = list_item.text; list_item.text = 'DELETED'; root.ids.container.remove_widget(root.ids.btn1); root.ids.container.remove_widget(root.ids.btn2)

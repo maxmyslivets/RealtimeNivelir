@@ -19,32 +19,26 @@ def DBFullRead(source='data/testRN.db'):
         return format_tables
 
 
-def DBRead(table, source='data/testRN.db'):
-    """ Чтение строк таблицы из БД. Возвращает список в котором кортеж из строк """
+def DBCreateProjectsTable(table, time_of_create):
+    """ Добавление в таблицу сведений об именах проектов и времени их создания """
 
-    # подключаемся к БД
-    con = sql.connect(source)
+    # подключиться к БД
+    con = sql.connect('data/testRN.db')
     with con:
         cur = con.cursor()
-        # читаем таблицу
-        rows = cur.execute("SELECT * FROM "+table).fetchall()
+        cur.execute(f"INSERT INTO projects_manager VALUES (?, ?)", [table, time_of_create])
         cur.close()
-        # возвращаем список строк
-        return rows
 
 
-def DBAdd(row, source='data/testRN.db'):
-    """ Добавление строки в таблицу БД. Выводит результат операции в print """
+def DBTableCreate(name, source='data/testRN.db'):
+    """ Создание таблицы в базе """
 
-    table = row[0]
-    row = row[1:]
-
-    # подключаемся к БД
-    con = sql.connect(source)
+    # подключиться к БД
+    con = sql.connect('data/testRN.db')
     with con:
         cur = con.cursor()
         # создать таблицу с колонками если нет
-        cur.execute('CREATE TABLE IF NOT EXISTS '+table+' ('  # создать таблицу, если не существует
+        cur.execute('CREATE TABLE IF NOT EXISTS '+name+' ('  # создать таблицу, если не существует
             'type_po TEXT, ' # направление хода str(прямой/обратный)
             'name_stantion TEXT, '  # имя станции
             'sp FLOAT, '    # переднее плечо
@@ -69,6 +63,50 @@ def DBAdd(row, source='data/testRN.db'):
             'k_h INTEGER, ' # направление превышения
             'h FLOAT, '     # превышение
             's FLOAT)')     # сумма плеч
+        cur.close()
+
+
+def DBDropTable(table, source='data/testRN.db'):
+    """ Удаление таблицы из БД """
+
+    # подключаемся к БД
+    con = sql.connect(source)
+    with con:
+        cur = con.cursor()
+        # читаем таблицу
+        cur.execute("DROP TABLE "+table)
+        cur.close()
+    # проверка
+    if table not in DBFullRead():
+        print('Таблица удалена')
+    else:
+        print('Ошибка удаления таблицы из БД')
+
+
+def DBRead(table, source='data/testRN.db'):
+    """ Чтение строк таблицы из БД. Возвращает список в котором кортеж из строк """
+
+    # подключаемся к БД
+    con = sql.connect(source)
+    with con:
+        cur = con.cursor()
+        # читаем таблицу
+        rows = cur.execute("SELECT * FROM "+table).fetchall()
+        cur.close()
+        # возвращаем список строк
+        return rows
+
+
+def DBAdd(row, source='data/testRN.db'):
+    """ Добавление строки в таблицу БД. Выводит результат операции в print """
+
+    table = row[0]
+    row = row[1:]
+
+    # подключаемся к БД
+    con = sql.connect(source)
+    with con:
+        cur = con.cursor()
         # записать в таблицу строку
         cur.execute(f"INSERT INTO "+table+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
         cur.close()

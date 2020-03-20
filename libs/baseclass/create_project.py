@@ -1,6 +1,6 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.toast import toast
 from kivymd.uix.label import MDLabel
@@ -143,8 +143,8 @@ class Stantion_2(BoxLayout):
         
         if len(DBFullRead()) == 0:
             DBAdd(row)
-        elif name_proj not in DBFullRead()[0]:
-            print('В базе нет таблицы, добавляем таблицу и строку')
+        elif name_proj not in DBFullRead():
+            print('В базе нет таблицы', name_proj, ', добавляем таблицу и строку')
             # добавить строку в таблицу
             DBAdd(row)
         else:
@@ -165,14 +165,8 @@ class Stantion_2(BoxLayout):
         return True # Цвет кнопки меняется (md_bg_color: .9, .16, .16, 1)
 
 
-class Obr_label(MDLabel):
-    text = '  Обратный ход'
-    #size_hint_y = None
-    #height = "40dp"
-
-
 class Create_project(Screen):
-    """ Чистый экран (то, что уже готово, ток добавить обратный ход и добавить функцию удаления бокса станции) """
+    """ Экран создания проекта """
     
     with open("libs/kv/create_project.kv", 'r', encoding='utf-8') as create_project_KV:
         Builder.load_string(create_project_KV.read())
@@ -186,3 +180,7 @@ class Create_project(Screen):
         label2 = Stantion_2()
         label2.id = name_proj
         self.ids.list2.add_widget(label2)
+
+
+            # FIXME     создать экран менеджера проектов в котором можно создать проект и нажатием перейти на экран редактирования
+            #           при создании просто добавляется в лист с проектами

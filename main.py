@@ -3,7 +3,9 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.toast import toast
-from libs.baseclass.create_project import Create_project
+from libs.baseclass.projects import Projects
+from libs.baseclass.project_edit import Project_edit
+
 
 class Home(Screen):
     """ Пустой экран, кнопка меню в правом верхнем углу:
@@ -14,13 +16,6 @@ class Home(Screen):
     
     with open("libs/kv/home.kv", 'r', encoding='utf-8') as home_KV:
         Builder.load_string(home_KV.read())
-
-
-class Open_project(Screen):
-    """ Экран со списком проектов, после выбора чтение данных с БД и построение экрана идентичного первому """
-
-    with open("libs/kv/open_project.kv", 'r', encoding='utf-8') as open_project_KV:
-        Builder.load_string(open_project_KV.read())
 
 
 class Documentation(Screen):
@@ -53,8 +48,8 @@ class RealtimeNivelirApp(MDApp):
 
         sm = ScreenManager()
         sm.add_widget(Home(name='home'))
-        sm.add_widget(Create_project(name='create_project'))
-        sm.add_widget(Open_project(name='open_project'))
+        sm.add_widget(Projects(name='projects'))
+        sm.add_widget(Project_edit(name='project_edit'))
         sm.add_widget(Documentation(name='documentation'))
         sm.add_widget(Export(name='export'))
         sm.add_widget(Vedomost(name='vedomost'))
